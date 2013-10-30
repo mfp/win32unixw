@@ -1,0 +1,26 @@
+
+USE_OCAMLFIND  = true
+BYTE_ENABLED   = true
+NATIVE_ENABLED = true
+OCAMLFLAGS     = -g -thread -w +a-4-6-9-27..29-32..99 -warn-error +a-4-6-7-9-18-27..29-32..99
+OCAMLPACKS[]   = camlp4.macro unix
+OCAMLFINDFLAGS = -syntax camlp4o
+
+public.CamlCleanRecursive() =
+    rm -f $(filter-proper-targets $(ls R, .)) *.annot *.s
+
+%.o: %.c
+    $(OCAMLC) $(mapprefix -ccopt, $(CFLAGS)) -c $^
+
+STUBS[] = $(removesuffix .c, $(ls *.c))
+
+StaticCLibrary(win32unixw_stubs, $(STUBS))
+
+win32unixw.cma win32unixw.cmxa win32unixw.a: $(addsuffix .o, $(STUBS)) unixW.cmo unixW.cmx
+	ocamlmklib -o win32unixw $+
+
+.DEFAULT: win32unixw.cma win32unixw.cmxa
+
+.PHONY: clean
+clean:
+	CamlCleanRecursive()
