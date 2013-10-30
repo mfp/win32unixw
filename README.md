@@ -1,5 +1,6 @@
 
 Subset of the Unix library for Win32 that uses the Win32 Unicode API.
+Refer to unixW.mli.
 
 Building
 --------
