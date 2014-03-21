@@ -100,6 +100,24 @@ let chdir s = WRAP (chdir (to_utf16z "chdir" s))
 external getcwd : unit -> utf16 = "unix_getcwdW"
 let getcwd () = WRAP (of_utf16 "getcwd" (getcwd ()))
 
+external execv : utf16z -> utf16z array -> 'a = "unix_execvW"
+let execv cmd args = WRAP (execv (to_utf16z "execv" cmd)
+                             (Array.map (to_utf16z "execv") args))
+
+external execve : utf16z -> utf16z array -> utf16z array -> 'a = "unix_execveW"
+let execve cmd args env = WRAP (execve (to_utf16z "execve" cmd)
+                                  (Array.map (to_utf16z "execve") args)
+                                  (Array.map (to_utf16z "execve") env))
+
+external execvp : utf16z -> utf16z array -> 'a = "unix_execvpW"
+let execvp cmd args = WRAP (execvp (to_utf16z "execvp" cmd)
+                              (Array.map (to_utf16z "execvp") args))
+
+external execvpe : utf16z -> utf16z array -> utf16z array -> 'a = "unix_execvpeW"
+let execvpe cmd args env = WRAP (execvpe (to_utf16z "execvpe" cmd)
+                                   (Array.map (to_utf16z "execvpe") args)
+                                   (Array.map (to_utf16z "execvpe") env))
+
 type dir_entry =
     Dir_empty
   | Dir_read of string

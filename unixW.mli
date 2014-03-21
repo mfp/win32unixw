@@ -40,6 +40,28 @@ val getenv : string -> string
   * [value] is the empty string. *)
 val putenv : string -> string -> unit
 
+
+(** {6 Process handling} *)
+
+val execv : string -> string array -> 'a
+(** [execv prog args] execute the program in file [prog], with
+   the arguments [args], and the current process environment.
+   These [execv*] functions never return: on success, the current
+   program is replaced by the new one;
+   on failure, a {!Unix.Unix_error} exception is raised. *)
+
+val execve : string -> string array -> string array -> 'a
+(** Same as {!Unix.execv}, except that the third argument provides the
+   environment to the program executed. *)
+
+val execvp : string -> string array -> 'a
+(** Same as {!Unix.execv}, except that
+   the program is searched in the path. *)
+
+val execvpe : string -> string array -> string array -> 'a
+(** Same as {!Unix.execve}, except that
+   the program is searched in the path. *)
+
 (** {6 Basic file input/output} *)
 
 val openfile : string -> open_flag list -> file_perm -> file_descr
